@@ -86,6 +86,6 @@ chmod +x script_1_attack.sh
 
 # Preparar entrada maliciosa
 echo "[+] Creating evil_input.txt entry ..."
-printf "evil:x:0:0:Evil User:/root:/bin/bash\n" > evil_input.txt
+printf "evil:x:0:0:Evil_User:/root:/bin/bash\n" > evil_input.txt
 
 echo "[+] All Setting up Now you can run the script_1_attack..."
