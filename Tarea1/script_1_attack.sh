@@ -2,7 +2,7 @@
 
 # Fixed attack script - attack.sh
 
-echo "=== Race Condition Attack - Fixed Version ==="
+echo "=== Race Condition Attack ==="
 echo
 
 # Verificaciones iniciales

