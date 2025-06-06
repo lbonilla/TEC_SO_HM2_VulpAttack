@@ -49,7 +49,7 @@ Esto intenta insertar:
 evil::20250:0:99999:7:::
 ```
 
-La contraseña es "123".
+La contraseña es "", por lo tanto no solicita contraseña.
 
 ## 3. Descripción del Ataque
 
@@ -75,8 +75,8 @@ El ataque se automatiza con scripts que lanzan tanto el ataque como la ejecució
 ### Calificación (Autoevaluada):
 
 * Tarea 1: 25%
-* Tarea 2: 20% (difícil ajustar bien la comparación de i-nodes)
-* Tarea 3: 20% (seteuid implementado)
+* Tarea 2: 25% 
+* Tarea 3: 25% 
 * Documentación: 25%
 * **Total estimado: 100%**
 
